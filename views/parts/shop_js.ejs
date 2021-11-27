@@ -1,0 +1,127 @@
+<script>
+    const loadBtn = $('.load-more');
+    const tbody = $('div.customshop');
+    let resultData = {};
+  
+    const itemTpl = (p, l) => {
+        return `
+            <div class="col-sm-6 col-xl-3 wow animate__animated animate__fadeInBottomLeft" data-wow-delay="${l}s">
+              <div class="box">
+                  <div class="img-box">
+                    <img src="/items_img/${p.item_id}.png" alt="">
+                  </div>
+                  <div class="detail-box">
+                    <h5>
+                      ${p.name} 
+                    </h5>
+                  </div>
+                  <div class="detail-box">
+                    <h6>
+                      店家：${p.owner} 
+                    </h6>
+                    <h6>
+                      Price:
+                      <span>
+                        <img src="/images/coin20.png" alt="">${p.price}
+                      </span>
+                    </h6>
+                  </div>
+                  <div class="detail-box">
+                    <button type="button" class="btn btn-outline-ligh folb" data-itemid="${p.item_id}"><img src="/images/star0.png" alt="">追蹤商品</button>
+                    <button type="button" class="btn btn-outline-success buybtn" data-itemid="${p.item_id}" data-name="${p.name}">立即購買</button>
+                  </div>
+                  <div class="new">
+                    <span>
+                      New
+                    </span>
+                  </div>
+              </div>
+            </div>`;
+    }
+  
+    async function loadProductData(page=1){
+        await $.get('/item-list-api/' + page, function(data){
+            resultData = data;
+  
+            let str = '';
+            let l = 1;
+            for(let i of data.rows){
+                str += itemTpl(i,0.4*l);
+                l++;
+            }
+            tbody.append(str);
+            if(data.totalPages > data.page){
+                loadBtn.show();
+            }
+        });
+        setfollowclick();
+        setpurchase();
+    }
+    loadProductData();
+    
+
+    loadBtn.on('click', function(){
+        $(this).hide();
+        loadProductData(resultData.page + 1);
+    });
+
+
+    function setfollowclick(){
+      const likebtn = $('button.folb');
+
+      likebtn.on('click',function(){
+        const frame = $(this);
+        let item = $(this).data('itemid');
+        $.post('/item-list-follow', {itemid: item}, function(data){
+              console.log(data);
+              console.log(JSON.stringify(data));
+              if(data.success){
+                if(data.flip){
+                  alert('追蹤成功');
+                  frame.html('<img src="/images/star2.png" alt="" title="取消追蹤">已追蹤');
+                } else {
+                  alert('取消追蹤成功');
+                  frame.html('<img src="/images/star0.png" alt="" title="加入追蹤">追蹤商品');
+                }
+              } else if (data.code==405){       // not loginned yet
+                alert(data.error);
+                setTimeout(function(){
+                  location.href = '/login';
+                  }, 2000);
+              }else{
+                alert(data.error);
+              }
+          }, 'json');
+      });
+    }
+    
+    function setpurchase(){
+      const buybtn = $('button.buybtn');
+
+      buybtn.on('click',function(){
+        const item = $(this).data('itemid');
+        const iname = $(this).data('name');
+        if(confirm(`確認購買 "${iname}" ？`)){
+          $.post('/item-list-buy', {itemid: item}, function(data){
+              console.log(data);
+              console.log(JSON.stringify(data));
+              if(data.success){
+                alert('購買成功，可以到我的倉庫查看');
+                location.href = "/item-list";
+              } else if (data.code==405){       // not loginned yet
+                alert(data.error);
+                setTimeout(function(){
+                  location.href = '/login';
+                  }, 1500);
+              }else if(data.code==430){         // not enough coin
+                alert(data.error);
+              }else{
+                alert(data.error);
+              }
+          }, 'json');
+        }
+        
+      });
+    }
+  
+</script> 

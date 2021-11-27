@@ -1,0 +1,66 @@
+
+  <div class="hero_area">
+    
+    <!-- header section strats -->
+    <header class="header_section hdcolor">
+      <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg custom_nav-container ">
+          <a class="navbar-brand" href="/">
+            <img src="/images/weblogo.png" alt="">
+            <span class="logoCh">巷弄市集</span>
+          </a>
+
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class=""> </span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+              <li class="nav-item active wow animate__bounceIn">
+                <a class="nav-link" href="/"> Home <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item wow animate__bounceIn" data-wow-delay="0.5s">
+                <a class="nav-link" href="/item-list"> 市場 </a>
+              </li>
+              <!-- <li class="nav-item wow animate__bounceIn" data-wow-delay="1s">
+                <a class="nav-link" href="/vender"> 我的攤位 </a>
+              </li> -->
+              <li class="nav-item  wow animate__bounceIn" data-wow-delay="1s"">
+                <a class="nav-link" href="/follow"> 我的追蹤 </a>
+              </li>
+              <li class="nav-item wow animate__bounceIn" data-wow-delay="1.5s">
+                <a class="nav-link" href="/depository"> 我的倉庫 </a>
+              </li>
+              <li class="nav-item  wow animate__bounceIn" data-wow-delay="2s"">
+                <a class="nav-link" href="/about"> About </a>
+              </li>
+            </ul>
+            <div class="user_option-box">
+              <% if (session.admin){ %> 
+                <a href="/member" title="profile">
+                  <span>Hi, <%= session.admin.nickname || session.admin.account %> </span>
+                </a>
+                <a href="#">
+                  <img src="/images/coin.png" alt="" title="coin"> <span><%= session.admin.coin %></span> 
+                </a>
+                <a href="/depository" >
+                  <img src="/images/house.png" alt="" title="我的倉庫">
+                </a>
+                <a href="/logout" >
+                  <img src="/images/logout.png" alt="" title="登出">
+                </a>
+              <% }else{ %> 
+                <a href="/login">
+                  <span class='navichar'>LOGIN</span>
+                  <img src="/images/login.png" alt="" title="登入">
+                </a>
+              <% } %>
+              <!-- <a href="/search">
+                <i class="fa fa-search" aria-hidden="true"></i>
+              </a> -->
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <!-- end header section -->

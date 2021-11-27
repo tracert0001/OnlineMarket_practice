@@ -1,0 +1,13 @@
+<%- include('parts/html-head')  %> 
+<body class="sub_page">
+<%- include('parts/navibar') %>
+</div>
+<div class="container">
+    <h2>親愛的<%= session.admin.nickname || session.admin.account %>您好： </h2>
+    <p>擁有銀幣： <%= session.admin.coin %> <img src="/images/coin.png" alt="" title="coin"></p>
+    <a href="/history"><button class="btn btn-primary">前往交易紀錄</button></a>
+</div>
+
+
+<%- include('parts/scripts') %> 
+<%- include('parts/footer') %> 

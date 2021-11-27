@@ -1,0 +1,71 @@
+<%- include('parts/html-head')  %> 
+<body class="sub_page">
+<%- include('parts/navibar') %>
+</div>
+<section class="about_section layout_padding">
+<div class="container">
+    <h2>
+      <img src="/images/welcome.png" alt=""> 哈囉，新面孔
+    </h2>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="alert alert-danger" role="alert">
+              輸入錯誤!
+            </div>
+            <form name="form10" onsubmit="checkform(); return false;" >
+                <div class="form-group">
+                  <label for="account">Account id</label>
+                  <input type="text" class="form-control" id="account" name="account" required>
+                </div>
+                <div class="form-group">
+                    <label for="nickname">暱稱</label>
+                    <input type="text" class="form-control" id="nickname" name="nickname">
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Email address</label>
+                  <input type="email" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" required>
+                  <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                </div>
+                <div class="form-group">
+                  <label for="password">Password</label>
+                  <input type="password" class="form-control" name="password" id="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="pwdCK">Password check</label>
+                    <input type="password" class="form-control" name="pwdCK" id="pwdCK" required>
+                </div>
+                <button type="submit" class="btn btn-primary">確認送出</button>
+              </form>
+        </div>
+    </div>
+</div>
+</section>
+
+
+<%- include('parts/scripts') %> 
+
+<script>
+  const info = $('.alert');
+  info.hide();
+
+  function checkform(){
+      $.post('',$(document.form10).serialize(),function(data){
+        if(data.success){
+          info.removeClass('alert-danger').addClass('alert-success');
+          info.html('註冊成功, 三秒後自動轉向');
+          info.slideDown();  // 下拉顯示
+          // 新增成功後回到首頁
+          setTimeout(function(){
+              location.href = '/';
+          }, 3000);
+        }else{
+          console.log(data.error);
+          info.removeClass('alert-success').addClass('alert-danger');
+          info.html(data.error);
+          info.slideDown();
+        }
+      },'json');
+    }
+</script>
+
+<%- include('parts/footer') %> 

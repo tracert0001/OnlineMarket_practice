@@ -1,0 +1,63 @@
+<%- include('parts/html-head')  %> 
+<body class="sub_page">
+<%- include('parts/navibar') %>
+</div>
+<section class="about_section layout_padding">
+<div class="container">
+    <!-- <div class="heading_container heading_center"> -->
+    <h2>
+        <img src="/images/welcome.png" alt=""> 歡迎回來
+    </h2>
+    <!-- </div> -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="alert alert-danger" role="alert">
+              輸入錯誤!
+            </div>
+            <form name="form0" onsubmit="checkform(); return false;" >
+                <div class="form-group">
+                  <label for="account">Account</label>
+                  <input type="text" class="form-control" id="account" name="account" aria-describedby="emailHelp" required>
+                </div>
+                <div class="form-group">
+                  <label for="password">Password</label>
+                  <input type="password" class="form-control" name="password" id="password" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary">登入</button>
+                <a href="/signup"><button type="button" class="btn btn-outline-warning">註冊新會員</button></a>
+            </form>
+        </div>
+    </div>
+</div>
+</section>
+<section class="about_section layout_padding">
+  <div class="container">
+      
+  </div>
+</section>
+
+<%- include('parts/scripts') %> 
+<script>
+  const info = $('.alert');
+  info.hide();
+
+    function checkform(){
+      $.post('',$(document.form0).serialize(),function(data){
+        if(data.success){
+          info.removeClass('alert-danger').addClass('alert-success');
+          info.html('登入成功, 三秒後自動轉向');
+          info.slideDown();  // 下拉顯示
+          // 新增成功後回到
+          setTimeout(function(){
+              location.href = '/';
+          }, 3000);
+        }else{
+          info.removeClass('alert-success').addClass('alert-danger');
+          info.html(data.error);
+          info.slideDown();
+        }
+      },'json');
+    }
+  </script>
+<%- include('parts/footer') %> 
